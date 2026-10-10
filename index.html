@@ -916,7 +916,7 @@ button{font-family:inherit}
   color:#fff;line-height:1.3;
 }
 
-/* ---------- REVEAL INTERNE (lightbox) ---------- */
+/* ---------- LIGHTBOX : image toujours floutée (jamais révélée) ---------- */
 .lb .img-wrap{
   position:relative;
   display:inline-block;
@@ -927,48 +927,11 @@ button{font-family:inherit}
   max-width:92vw;max-height:82vh;
   background:#fff;
   box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
-  transition:filter .8s var(--ease), transform .8s var(--ease);
-}
-.lb .img-wrap.blurred img{
   filter:blur(28px) saturate(.55);
   transform:scale(1.02);
   pointer-events:none;
   user-select:none;
 }
-.lb .reveal-btn{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  padding:14px 28px;
-  border:1px solid rgba(255,255,255,.55);
-  background:rgba(26,14,22,.65);
-  color:#fff;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10px;font-weight:600;
-  letter-spacing:.2em;text-transform:uppercase;
-  cursor:pointer;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  transition:background .35s var(--ease), border-color .35s var(--ease),
-             letter-spacing .35s var(--ease), transform .35s var(--ease);
-  z-index:3;
-  margin-top:38px;
-}
-.lb .reveal-btn::before{
-  content:'';
-  display:inline-block;
-  width:6px;height:6px;border-radius:50%;
-  background:var(--orange);
-  margin-right:10px;
-  vertical-align:middle;
-  animation:pulseDot 1.8s ease-in-out infinite;
-}
-.lb .reveal-btn:hover{
-  background:var(--orange);
-  border-color:var(--orange);
-  letter-spacing:.28em;
-  transform:translate(-50%,-50%) scale(1.04);
-}
-.lb .img-wrap:not(.blurred) .reveal-btn{display:none}
 
 /* ---------- LOADING OVERLAY (commun) ---------- */
 .spinner{
@@ -1009,7 +972,6 @@ button{font-family:inherit}
   gap:16px;padding:24px;text-align:center;
   background:rgba(26,14,22,.4);
   z-index:2;pointer-events:none;
-  transition:opacity .5s var(--ease);
 }
 .lb .img-wrap .load-overlay .spinner{
   width:34px;height:34px;
@@ -1022,7 +984,6 @@ button{font-family:inherit}
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:#fff;font-weight:600;
 }
-.lb .img-wrap:not(.blurred) .load-overlay{opacity:0;visibility:hidden}
 
 /* ---------- REVEAL ---------- */
 .rv{opacity:0;transform:translateY(24px);
@@ -1398,7 +1359,6 @@ var I18N = {
 
     'soon.title': 'Aperçu en cours<br>de mise à jour',
     'soon.long': 'Aperçu en cours de mise à jour',
-    'reveal.btn': 'Révéler le document',
     'preview.loading': "Chargement de l'aperçu…",
 
     'doc.diplome': "Diplôme d'ingénieur des procédés — Université Catholique Saint-Jérôme de Douala",
@@ -1482,7 +1442,6 @@ var I18N = {
 
     'soon.title': 'Preview being<br>updated',
     'soon.long': 'Preview being updated',
-    'reveal.btn': 'Reveal document',
     'preview.loading': 'Loading preview…',
 
     'doc.diplome': "Process Engineering Degree — Université Catholique Saint-Jérôme de Douala",
@@ -1736,13 +1695,7 @@ var renderCerts;
       '<b>'+t('soon.title')+'</b>'+
     '</div>';
   }
-  function loadOverlayLb(){
-    return '<div class="load-overlay">'+
-      '<div class="spinner"></div>'+
-      '<div class="load-label">'+t('preview.loading')+'</div>'+
-    '</div>';
-  }
-  function loadOverlayThumb(){
+  function loadOverlay(){
     return '<div class="load-overlay">'+
       '<div class="spinner"></div>'+
       '<div class="load-label">'+t('preview.loading')+'</div>'+
@@ -1771,7 +1724,7 @@ var renderCerts;
         img.src=c.data;img.alt=name;img.loading='lazy';
         img.onerror=function(){thumb.innerHTML=soonBox();};
         thumb.appendChild(img);
-        thumb.insertAdjacentHTML('beforeend', loadOverlayThumb());
+        thumb.insertAdjacentHTML('beforeend', loadOverlay());
       }
 
       var info=document.createElement('div');
@@ -1793,7 +1746,7 @@ var renderCerts;
       var iframe=document.createElement('iframe');iframe.src=c.data;lbContent.appendChild(iframe);
     }else{
       var wrap=document.createElement('div');
-      wrap.className='img-wrap blurred';
+      wrap.className='img-wrap';
 
       var img=document.createElement('img');
       img.src=c.data;img.alt=name;
@@ -1801,17 +1754,7 @@ var renderCerts;
         lbContent.innerHTML='<div class="soonbox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>'+t('soon.long')+'</b></div>';
       };
       wrap.appendChild(img);
-      wrap.insertAdjacentHTML('beforeend', loadOverlayLb());
-
-      var revealBtn=document.createElement('button');
-      revealBtn.type='button';
-      revealBtn.className='reveal-btn';
-      revealBtn.textContent=t('reveal.btn');
-      revealBtn.addEventListener('click',function(e){
-        e.stopPropagation();
-        wrap.classList.remove('blurred');
-      });
-      wrap.appendChild(revealBtn);
+      wrap.insertAdjacentHTML('beforeend', loadOverlay());
 
       lbContent.appendChild(wrap);
     }
