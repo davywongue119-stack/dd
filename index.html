@@ -645,6 +645,7 @@ button{font-family:inherit}
 .cert-card:nth-child(2).rv{transition-delay:.15s}
 .cert-card:nth-child(3).rv{transition-delay:.25s}
 .cert-card:nth-child(4).rv{transition-delay:.35s}
+.cert-card:nth-child(5).rv{transition-delay:.45s}
 .cert-card:hover{
   border-color:var(--ink);
   transform:translateY(-8px);
@@ -1192,14 +1193,14 @@ button{font-family:inherit}
   </div>
   <div class="col-visual">
     <div class="visual-panel">
-      <div class="big-num" data-count="4">04</div>
+      <div class="big-num" data-count="5">05</div>
       <div class="big-label" data-i18n="outils.biglabel">Certifications</div>
     </div>
     <div class="info-panel">
       <div class="ip-name" data-i18n="outils.stack">Stack technique</div>
       <div class="info-row"><span>SAP</span><b data-i18n="outils.certified">Certifié</b></div>
       <div class="info-row"><span>Excel</span><b data-i18n="outils.advanced">Avancé</b></div>
-      <div class="info-row"><span>Audit</span><span class="dots">●●●●○</span></div>
+      <div class="info-row"><span>Anglais</span><b>C1</b></div>
     </div>
   </div>
 </section>
@@ -1298,7 +1299,7 @@ var I18N = {
     'scroll': 'Défiler',
 
     'parcours.title': '<span class="word"><span>Le</span></span> <span class="word"><span>parcours,</span></span> <span class="word"><span>en</span></span> <span class="word"><span>quatre</span></span> <span class="word"><span>temps.</span></span>',
-    'parcours.lede': "Diplômé ingénieur des procédés (2024), formé à la comptabilité financière par l'Université de Pennsylvanie, certifié SAP Business Analyst et formé à l'audit interne — une trajectoire qui relie l'exigence industrielle aux réflexes du contrôle financier.",
+    'parcours.lede': "Diplômé ingénieur des procédés (2025), formé à la comptabilité financière par l'Université de Pennsylvanie, certifié SAP Business Analyst et formé à l'audit interne — une trajectoire qui relie l'exigence industrielle aux réflexes du contrôle financier.",
 
     'card1.intro': "Les principes financiers sont d'abord des principes de vie : ils apprennent à arbitrer, à anticiper, à préserver. <em>Mieux les comprendre, c'est décider mieux.</em>",
     'card1.name': "L'appétence",
@@ -1362,6 +1363,7 @@ var I18N = {
     'preview.loading': "Chargement de l'aperçu…",
 
     'doc.diplome': "Diplôme d'ingénieur des procédés — Université Catholique Saint-Jérôme de Douala",
+    'doc.c1english': "Certificat d'anglais niveau C1 — 2023",
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
     'doc.penn': 'Fundamentals of Finance — University of Pennsylvania',
     'doc.bloomberg': 'Bloomberg Market Concepts (BMC) — Bloomberg'
@@ -1381,7 +1383,7 @@ var I18N = {
     'scroll': 'Scroll',
 
     'parcours.title': '<span class="word"><span>The</span></span> <span class="word"><span>journey,</span></span> <span class="word"><span>in</span></span> <span class="word"><span>four</span></span> <span class="word"><span>stages.</span></span>',
-    'parcours.lede': "Process engineering graduate (2024), trained in financial accounting by the University of Pennsylvania, certified SAP Business Analyst and trained in internal auditing — a path that connects industrial rigour with the reflexes of financial control.",
+    'parcours.lede': "Process engineering graduate (2025), trained in financial accounting by the University of Pennsylvania, certified SAP Business Analyst and trained in internal auditing — a path that connects industrial rigour with the reflexes of financial control.",
 
     'card1.intro': "Financial principles are first principles of life: they teach us to arbitrate, anticipate, and preserve. <em>Understanding them better means deciding better.</em>",
     'card1.name': 'The appetite',
@@ -1445,6 +1447,7 @@ var I18N = {
     'preview.loading': 'Loading preview…',
 
     'doc.diplome': "Process Engineering Degree — Université Catholique Saint-Jérôme de Douala",
+    'doc.c1english': 'English Certificate Level C1 — 2023',
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
     'doc.penn': 'Fundamentals of Finance — University of Pennsylvania',
     'doc.bloomberg': 'Bloomberg Market Concepts (BMC) — Bloomberg'
@@ -1667,10 +1670,11 @@ var renderCerts;
 
 (function(){
   var DOCUMENTS=[
-    {key:'doc.diplome', type:'image/jpeg', date:new Date('2024-07-01').getTime(), data:'diplome-ingenieur-wongue-davy-cedric.jpg'},
-    {key:'doc.sap',      type:'image/jpeg', date:new Date('2024-01-01').getTime(), data:'certificat-sap-business-analyst.jpg'},
-    {key:'doc.penn',     type:'image/jpeg', date:new Date('2024-04-16').getTime(), data:'certificat-penn-finance.jpg'},
-    {key:'doc.bloomberg',type:'image/jpeg', date:new Date('2024-01-01').getTime(), data:'certificat-bloomberg-bmc.jpg'}
+    {key:'doc.diplome',   type:'image/jpeg', year:'2025', data:'diplome-ingenieur-wongue-davy-cedric.jpg'},
+    {key:'doc.c1english', type:'image/jpeg', year:'2023', data:'certificat-c1-anglais.jpg'},
+    {key:'doc.sap',       type:'image/jpeg', year:'2026', data:'certificat-sap-business-analyst.jpg'},
+    {key:'doc.penn',      type:'image/jpeg', year:'2025', data:'certificat-penn-finance.jpg'},
+    {key:'doc.bloomberg', type:'image/jpeg', year:'2026', data:'certificat-bloomberg-bmc.jpg'}
   ];
   var grid=document.getElementById('certGrid');
   var empty=document.getElementById('certEmpty');
@@ -1679,10 +1683,8 @@ var renderCerts;
   var lbCap=document.getElementById('lbCap');
   var lbClose=document.getElementById('lbClose');
 
-  function fmtDate(ts){
-    var d=new Date(ts);
-    var loc = currentLang === 'en' ? 'en-GB' : 'fr-FR';
-    return d.toLocaleDateString(loc,{day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+  function fmtDate(y){
+    return String(y);
   }
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g,function(c){
@@ -1729,7 +1731,7 @@ var renderCerts;
 
       var info=document.createElement('div');
       info.className='cert-info';
-      info.innerHTML='<div class="t">'+escapeHtml(name)+'</div><div class="d">'+fmtDate(c.date)+'</div>';
+      info.innerHTML='<div class="t">'+escapeHtml(name)+'</div><div class="d">'+fmtDate(c.year)+'</div>';
 
       card.appendChild(thumb);card.appendChild(info);
       grid.appendChild(card);
