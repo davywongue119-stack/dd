@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -158,6 +158,7 @@ button{font-family:inherit}
   gap:10px;
 }
 
+/* ---------- BOUTON DE LANGUE ---------- */
 .lang-btn{
   display:inline-flex;
   align-items:center;
@@ -174,6 +175,7 @@ button{font-family:inherit}
   color:var(--mut);
   transition:border-color .35s var(--ease), color .35s var(--ease), background .35s var(--ease);
   gap:4px;
+  position:relative;
 }
 .lang-btn:hover{border-color:var(--ink);color:var(--ink)}
 .lang-btn .sep{color:var(--line);font-weight:400}
@@ -183,6 +185,32 @@ button{font-family:inherit}
 }
 .lang-btn .lg.active{color:var(--violet);opacity:1}
 .lang-btn:hover .lg.active{color:var(--orange)}
+
+/* Animation d'attention : anneau pulsant + clignotement du libellé inactif */
+.lang-btn::after{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:99px;
+  border:1.5px solid var(--orange);
+  opacity:0;
+  pointer-events:none;
+  animation:langBeacon 4s cubic-bezier(.22,1,.36,1) infinite;
+}
+@keyframes langBeacon{
+  0%{opacity:0;transform:scale(1)}
+  10%{opacity:.85;transform:scale(1)}
+  55%{opacity:0;transform:scale(1.55)}
+  100%{opacity:0;transform:scale(1.55)}
+}
+.lang-btn .lg:not(.active){
+  animation:langBlink 2.4s ease-in-out infinite;
+}
+@keyframes langBlink{
+  0%,100%{opacity:.5;color:var(--mut)}
+  50%{opacity:1;color:var(--orange)}
+}
+.lang-btn:hover::after{animation:none;opacity:0}
 
 .head-icon{
   width:26px;height:26px;border:1px solid var(--ink);border-radius:50%;
@@ -484,7 +512,6 @@ button{font-family:inherit}
 .why-intro b{color:var(--ink);font-weight:600}
 .why-intro + .why-intro{margin-top:14px}
 
-/* Dualité */
 .why-dual{
   display:grid;grid-template-columns:1fr auto 1fr;
   align-items:stretch;
@@ -1105,7 +1132,6 @@ button{font-family:inherit}
   color:#fff;line-height:1.3;
 }
 
-/* ---------- LIGHTBOX : image toujours floutée (jamais révélée) ---------- */
 .lb .img-wrap{
   position:relative;
   display:inline-block;
@@ -1122,7 +1148,7 @@ button{font-family:inherit}
   user-select:none;
 }
 
-/* ---------- LOADING OVERLAY (commun) ---------- */
+/* ---------- LOADING OVERLAY ---------- */
 .spinner{
   border-radius:50%;
   border-style:solid;
@@ -1215,7 +1241,7 @@ button{font-family:inherit}
 <body>
 
 <div class="progress-bar" id="progressBar"></div>
-<div class="page-label" data-i18n="page.label">0.1 — Candidature · Finance Graduate Trainee</div>
+<div class="page-label" data-i18n="page.label">0.1 — Application · Finance Graduate Trainee</div>
 
 <header class="site-head" id="siteHead">
   <div class="brand">
@@ -1223,16 +1249,16 @@ button{font-family:inherit}
     <div class="brand-name">Wongue<br>Davy Cédric</div>
   </div>
   <nav class="head-nav">
-    <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
-    <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Pourquoi ofi</a>
+    <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Journey</a>
+    <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificates</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Why ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="head-right">
     <button class="lang-btn" id="langBtn" type="button" aria-label="Change language">
-      <span class="lg active" data-lang="fr">FR</span>
-      <span class="sep">/</span>
       <span class="lg" data-lang="en">EN</span>
+      <span class="sep">/</span>
+      <span class="lg active" data-lang="fr">FR</span>
     </button>
     <a href="#contact" class="head-icon" title="Contact">↗</a>
   </div>
@@ -1241,17 +1267,16 @@ button{font-family:inherit}
 <section class="hero-ss" id="top">
   <div class="hero-left">
     <h1 id="heroTitle" data-i18n-html="hero.title">
-      <span class="word"><span>Ingénieur</span></span>
-      <span class="word"><span>des</span></span>
-      <span class="word"><span>procédés,</span></span>
-      <span class="word"><span>certifié</span></span>
+      <span class="word"><span>Process</span></span>
+      <span class="word"><span>Engineer,</span></span>
+      <span class="word"><span>certified</span></span>
       <span class="word"><span><em>SAP</em></span></span>
       <span class="word"><span>&amp;</span></span>
-      <span class="word"><span>comptabilité</span></span>
-      <span class="word"><span>financière.</span></span>
+      <span class="word"><span>financial</span></span>
+      <span class="word"><span>accounting.</span></span>
     </h1>
-    <p class="hero-lede" data-i18n="hero.lede">Une candidature pour le poste de Finance Graduate Trainee chez ofi Douala — rigueur analytique, souci du détail, intégrité.</p>
-    <a href="#certificats" class="link-underline" data-target="certificats" data-i18n="hero.link">Voir les documents</a>
+    <p class="hero-lede" data-i18n="hero.lede">An application for the Finance Graduate Trainee position at ofi Douala — analytical rigour, attention to detail, integrity.</p>
+    <a href="#certificats" class="link-underline" data-target="certificats" data-i18n="hero.link">View documents</a>
   </div>
 
   <div class="hero-right" tabindex="0">
@@ -1264,25 +1289,25 @@ button{font-family:inherit}
         <em data-i18n="hero.role">Finance Graduate Trainee</em>
       </div>
       <div class="h-meta">
-        <span><span class="dot"></span><span data-i18n="hero.meta1">Douala, Cameroun</span></span>
-        <span><span class="dot"></span><span data-i18n="hero.meta2">Disponible</span></span>
+        <span><span class="dot"></span><span data-i18n="hero.meta1">Douala, Cameroon</span></span>
+        <span><span class="dot"></span><span data-i18n="hero.meta2">Available</span></span>
       </div>
     </div>
   </div>
 
-  <div class="scroll-hint" data-i18n="scroll">Défiler</div>
+  <div class="scroll-hint" data-i18n="scroll">Scroll</div>
 </section>
 
 <section class="section-ss" id="histoire">
   <div class="head-row">
     <h2 class="h-big" data-i18n-html="parcours.title">
-      <span class="word"><span>Le</span></span>
-      <span class="word"><span>parcours,</span></span>
-      <span class="word"><span>en</span></span>
-      <span class="word"><span>quatre</span></span>
-      <span class="word"><span>temps.</span></span>
+      <span class="word"><span>The</span></span>
+      <span class="word"><span>journey,</span></span>
+      <span class="word"><span>in</span></span>
+      <span class="word"><span>four</span></span>
+      <span class="word"><span>stages.</span></span>
     </h2>
-    <p class="section-lede rv" data-i18n="parcours.lede">Diplômé ingénieur des procédés (2025), formé à la comptabilité financière par l'Université de Pennsylvanie, certifié SAP Business Analyst et formé à l'audit interne — une trajectoire qui relie l'exigence industrielle aux réflexes du contrôle financier.</p>
+    <p class="section-lede rv" data-i18n="parcours.lede">Process engineering graduate (2025), trained in financial accounting by the University of Pennsylvania, certified SAP Business Analyst and trained in internal auditing — a path that connects industrial rigour with the reflexes of financial control.</p>
   </div>
 
   <div class="blend-cards">
@@ -1290,11 +1315,11 @@ button{font-family:inherit}
       <div class="glow"></div>
       <div class="blend-num">01</div>
       <p class="blend-intro" data-i18n-html="card1.intro">
-        Les principes financiers sont d'abord des principes de vie : ils apprennent à arbitrer, à anticiper, à préserver. <em>Mieux les comprendre, c'est décider mieux.</em>
+        Financial principles are first principles of life: they teach us to arbitrate, anticipate, and preserve. <em>Understanding them better means deciding better.</em>
       </p>
       <div class="blend-foot">
-        <div class="blend-name"><span data-i18n="card1.name">L'appétence</span><span class="circ"></span></div>
-        <div class="blend-sub" data-i18n="card1.sub">Pourquoi la finance ?</div>
+        <div class="blend-name"><span data-i18n="card1.name">The appetite</span><span class="circ"></span></div>
+        <div class="blend-sub" data-i18n="card1.sub">Why finance?</div>
         <div class="dot-rating">●●●●<span class="off">●</span></div>
       </div>
     </article>
@@ -1303,11 +1328,11 @@ button{font-family:inherit}
       <div class="glow"></div>
       <div class="blend-num">02</div>
       <p class="blend-intro" data-i18n-html="card2.intro">
-        Vérifier une donnée, suivre un écart, sécuriser une information : <em>les gestes du contrôle qualité sont ceux du contrôle financier.</em>
+        Verifying a data point, tracking a variance, securing information: <em>the gestures of quality control are those of financial control.</em>
       </p>
       <div class="blend-foot">
-        <div class="blend-name"><span data-i18n="card2.name">Le terrain</span><span class="circ"></span></div>
-        <div class="blend-sub" data-i18n="card2.sub">Contrôle, conformité, analyse</div>
+        <div class="blend-name"><span data-i18n="card2.name">The field</span><span class="circ"></span></div>
+        <div class="blend-sub" data-i18n="card2.sub">Control, compliance, analysis</div>
         <div class="dot-rating">●●●●●</div>
       </div>
     </article>
@@ -1316,10 +1341,10 @@ button{font-family:inherit}
       <div class="glow"></div>
       <div class="blend-num">03</div>
       <p class="blend-intro" data-i18n-html="card3.intro">
-        SAP, Excel, reporting : des outils qui transforment une donnée brute en <em>décision chiffrée, argumentée et partageable.</em>
+        SAP, Excel, reporting: tools that turn raw data into a <em>quantified, argued, and shareable decision.</em>
       </p>
       <div class="blend-foot">
-        <div class="blend-name"><span data-i18n="card3.name">Les outils</span><span class="circ"></span></div>
+        <div class="blend-name"><span data-i18n="card3.name">The tools</span><span class="circ"></span></div>
         <div class="blend-sub" data-i18n="card3.sub">SAP · Excel · reporting</div>
         <div class="dot-rating">●●●●<span class="off">●</span></div>
       </div>
@@ -1329,11 +1354,11 @@ button{font-family:inherit}
       <div class="glow"></div>
       <div class="blend-num">04</div>
       <p class="blend-intro" data-i18n-html="card4.intro">
-        Diplôme et certifications : les fondations vérifiables d'une <em>reconversion assumée</em> vers la finance.
+        Degree and certifications: the verifiable foundations of an <em>assumed career shift</em> toward finance.
       </p>
       <div class="blend-foot">
-        <div class="blend-name"><span data-i18n="card4.name">Les preuves</span><span class="circ"></span></div>
-        <div class="blend-sub" data-i18n="card4.sub">Diplôme &amp; certifications</div>
+        <div class="blend-name"><span data-i18n="card4.name">The evidence</span><span class="circ"></span></div>
+        <div class="blend-sub" data-i18n="card4.sub">Degree &amp; certifications</div>
         <div class="dot-rating">●●●●●</div>
       </div>
     </article>
@@ -1342,40 +1367,40 @@ button{font-family:inherit}
 
 <section class="two-col" id="terrain">
   <div class="col-text">
-    <h2 data-i18n="terrain.title">Le terrain. Cinq expériences industrielles, un même réflexe : vérifier.</h2>
-    <p data-i18n="terrain.p">Du contrôle qualité à la standardisation des procédés, j'ai appris à lire un dossier, à suivre un écart et à produire un reporting fiable — les gestes du quotidien en Finance.</p>
+    <h2 data-i18n="terrain.title">The field. Five industrial experiences, one same reflex: verify.</h2>
+    <p data-i18n="terrain.p">From quality control to process standardisation, I learned to read a file, track a variance, and produce reliable reporting — the everyday gestures of Finance.</p>
     <ul>
-      <li data-i18n-html="terrain.li1"><b>Michele's Industries</b> — Analyse sous Excel, 3 postes standardisés, contrôle de conformité ANOR. Recyclage +40 %, arrêts −15 %.</li>
-      <li data-i18n-html="terrain.li2"><b>AVRAM APTUS</b> — 04 micro-industries accompagnées (SOP, plans HACCP), variabilité réduite de 18 %.</li>
-      <li data-i18n-html="terrain.li3"><b>FBI — Food &amp; Beverages Industries</b> — Bilans matière/énergie, compromis stabilité-coût amélioré de 12 %.</li>
-      <li data-i18n-html="terrain.li4"><b>OK Foods · SIC Cacao</b> — Contrôles sanitaires, suivi QHSE, analyse Ishikawa.</li>
+      <li data-i18n-html="terrain.li1"><b>Michele's Industries</b> — Excel-based analysis, 3 positions standardised, ANOR compliance control. Packaging recycling +40%, unplanned downtime −15%.</li>
+      <li data-i18n-html="terrain.li2"><b>AVRAM APTUS</b> — 04 micro-industries supported (SOPs, HACCP plans), product variability reduced by 18%.</li>
+      <li data-i18n-html="terrain.li3"><b>FBI — Food &amp; Beverages Industries</b> — Mass and energy balances, stability/cost trade-off improved by 12%.</li>
+      <li data-i18n-html="terrain.li4"><b>OK Foods · SIC Cacao</b> — Sanitary controls, QHSE monitoring, Ishikawa analysis.</li>
     </ul>
   </div>
   <div class="col-visual">
     <div class="visual-panel">
       <div class="big-num" data-count="5">05</div>
-      <div class="big-label" data-i18n="terrain.biglabel">Expériences</div>
+      <div class="big-label" data-i18n="terrain.biglabel">Experiences</div>
     </div>
     <div class="info-panel">
       <div class="ip-name">Wongue Davy Cédric</div>
-      <div class="info-row"><span data-i18n="info.field">Terrain</span><b>2021 — 2025</b></div>
-      <div class="info-row"><span data-i18n="info.location">Lieu</span><b data-i18n="info.location.val">Douala, CM</b></div>
-      <div class="info-row"><span data-i18n="info.rigour">Rigueur</span><span class="dots">●●●●●</span></div>
+      <div class="info-row"><span data-i18n="info.field">Field</span><b>2021 — 2025</b></div>
+      <div class="info-row"><span data-i18n="info.location">Location</span><b data-i18n="info.location.val">Douala, CM</b></div>
+      <div class="info-row"><span data-i18n="info.rigour">Rigour</span><span class="dots">●●●●●</span></div>
     </div>
   </div>
 </section>
 
 <section class="two-col reverse" id="outils">
   <div class="col-text">
-    <h2 data-i18n="outils.title">Les outils. SAP côté systèmes, Excel côté analyse.</h2>
-    <p data-i18n="outils.p">Les compétences attendues pour saisir et suivre des transactions comptables, contrôler des rapprochements et produire du reporting — sans jargon, avec méthode.</p>
+    <h2 data-i18n="outils.title">The tools. SAP on the systems side, Excel on the analysis side.</h2>
+    <p data-i18n="outils.p">The skills expected to enter and track accounting transactions, control reconciliations, and produce reporting — without jargon, with method.</p>
     <ul>
       <li data-i18n-html="outils.li1"><b>SAP</b> — SAP Business Analyst Professional Certificate</li>
       <li data-i18n-html="outils.li2"><b>Excel</b> — Excel Fundamentals for Data Analysis (Macquarie University)</li>
-      <li data-i18n-html="outils.li3"><b>Bureautique</b> — Word, PowerPoint</li>
-      <li data-i18n-html="outils.li4"><b>Analyse</b> — suivi d'indicateurs (KPI), gap analysis, rapprochements</li>
+      <li data-i18n-html="outils.li3"><b>Office</b> — Word, PowerPoint</li>
+      <li data-i18n-html="outils.li4"><b>Analysis</b> — KPI tracking, gap analysis, reconciliations</li>
     </ul>
-    <a href="#certificats" class="link-underline" data-target="certificats" data-i18n="outils.link">Voir les certifications</a>
+    <a href="#certificats" class="link-underline" data-target="certificats" data-i18n="outils.link">View certifications</a>
   </div>
   <div class="col-visual">
     <div class="visual-panel">
@@ -1383,10 +1408,10 @@ button{font-family:inherit}
       <div class="big-label" data-i18n="outils.biglabel">Certifications</div>
     </div>
     <div class="info-panel">
-      <div class="ip-name" data-i18n="outils.stack">Stack technique</div>
-      <div class="info-row"><span>SAP</span><b data-i18n="outils.certified">Certifié</b></div>
-      <div class="info-row"><span>Excel</span><b data-i18n="outils.advanced">Avancé</b></div>
-      <div class="info-row"><span>Anglais</span><b>C1</b></div>
+      <div class="ip-name" data-i18n="outils.stack">Technical stack</div>
+      <div class="info-row"><span>SAP</span><b data-i18n="outils.certified">Certified</b></div>
+      <div class="info-row"><span>Excel</span><b data-i18n="outils.advanced">Advanced</b></div>
+      <div class="info-row"><span>English</span><b>C1</b></div>
     </div>
   </div>
 </section>
@@ -1394,75 +1419,72 @@ button{font-family:inherit}
 <section class="section-ss" id="certificats">
   <div class="head-row">
     <h2 class="h-big" data-i18n-html="certs.title">
-      <span class="word"><span>Certificats</span></span>
+      <span class="word"><span>Certificates</span></span>
       <span class="word"><span>&amp;</span></span>
       <span class="word"><span>attestations.</span></span>
     </h2>
-    <p class="section-lede rv" data-i18n="certs.lede">Diplômes, certificats et attestations vérifiables. Cliquez sur une vignette pour agrandir l'aperçu.</p>
+    <p class="section-lede rv" data-i18n="certs.lede">Diplomas, certificates and verifiable attestations. Click a thumbnail to enlarge the preview.</p>
   </div>
 
   <div class="cert-grid" id="certGrid">
-    <div class="cert-empty" id="certEmpty" data-i18n="certs.loading">Chargement des documents…</div>
+    <div class="cert-empty" id="certEmpty" data-i18n="certs.loading">Loading documents…</div>
   </div>
 </section>
 
 <section class="section-ss" id="competences">
   <div class="head-row">
     <h2 class="h-big" data-i18n-html="path.title">
-      <span class="word"><span>Une</span></span>
-      <span class="word"><span>trajectoire,</span></span>
-      <span class="word"><span>deux</span></span>
+      <span class="word"><span>One</span></span>
+      <span class="word"><span>path,</span></span>
+      <span class="word"><span>two</span></span>
       <span class="word"><span>forces.</span></span>
     </h2>
-    <p class="section-lede rv" data-i18n="path.lede">De l'excellence industrielle vers les compétences finance &amp; data — la même exigence : comprendre, chiffrer, décider.</p>
+    <p class="section-lede rv" data-i18n="path.lede">From industrial excellence to finance &amp; data skills — the same requirement: understand, quantify, decide.</p>
   </div>
 
   <div class="chart-box rv">
     <div class="chart-head">
-      <div class="l"><span class="dot-live"></span><b data-i18n="chart.flow">Flux</b> · <span data-i18n="chart.range">parcours 2021 → 2025</span></div>
-      <div class="l" data-i18n="chart.perpetual">animation perpétuelle</div>
+      <div class="l"><span class="dot-live"></span><b data-i18n="chart.flow">Flow</b> · <span data-i18n="chart.range">journey 2021 → 2025</span></div>
+      <div class="l" data-i18n="chart.perpetual">perpetual animation</div>
     </div>
     <div class="flux-wrap">
       <canvas id="chart"></canvas>
     </div>
     <div class="chart-legend">
-      <span><i style="background:#6B1B5A"></i><span data-i18n="chart.legend1">Excellence industrielle &amp; qualité</span></span>
-      <span><i style="background:#F58220"></i><span data-i18n="chart.legend2">Compétences finance &amp; data</span></span>
+      <span><i style="background:#6B1B5A"></i><span data-i18n="chart.legend1">Industrial excellence &amp; quality</span></span>
+      <span><i style="background:#F58220"></i><span data-i18n="chart.legend2">Finance &amp; data skills</span></span>
     </div>
   </div>
 </section>
 
-<!-- =========================================================
-     POURQUOI OFI
-     ========================================================= -->
 <section class="why-ofi" id="ofi">
   <div class="why-head">
     <div>
-      <div class="why-label" data-i18n="why.label">Pourquoi ofi ?</div>
-      <h2 class="why-title" data-i18n-html="why.title">Là où mes <em>deux mondes</em> se rencontrent.</h2>
+      <div class="why-label" data-i18n="why.label">Why ofi?</div>
+      <h2 class="why-title" data-i18n-html="why.title">Where my <em>two worlds</em> meet.</h2>
     </div>
     <div>
-      <p class="why-intro" data-i18n="why.intro">Chez ofi, mes deux centres d'intérêt — la <b>rigueur industrielle</b> et la <b>discipline financière</b> — ne s'opposent pas : ils se rejoignent.</p>
-      <p class="why-intro" data-i18n="why.intro2">Comprendre une chaîne de production, c'est déjà comprendre un cycle de coûts. Sécuriser une matière première, c'est déjà sécuriser une marge. Rejoindre ofi, c'est travailler à l'intersection exacte de ce que je sais faire et de ce que je veux devenir.</p>
+      <p class="why-intro" data-i18n="why.intro">At ofi, my two centres of interest — <b>industrial rigour</b> and <b>financial discipline</b> — do not oppose each other: they come together.</p>
+      <p class="why-intro" data-i18n="why.intro2">Understanding a production line already means understanding a cost cycle. Securing a raw material already means securing a margin. Joining ofi means working at the exact intersection of what I know how to do and what I want to become.</p>
     </div>
   </div>
 
   <div class="why-dual">
     <div class="why-side">
       <div class="wn">01</div>
-      <div class="wt" data-i18n="why.left.title">Ingénierie des procédés</div>
-      <div class="wd" data-i18n="why.left.desc">Contrôle qualité, standardisation, bilans matière et énergie — les gestes que j'ai pratiqués sur le terrain et qui m'ont appris à lire une donnée, à suivre un écart et à sécuriser un process.</div>
+      <div class="wt" data-i18n="why.left.title">Process engineering</div>
+      <div class="wd" data-i18n="why.left.desc">Quality control, standardisation, mass and energy balances — the gestures I practised in the field and that taught me to read data, track a variance and secure a process.</div>
       <div class="wl">
-        <span>Qualité</span>
+        <span>Quality</span>
         <span>Process</span>
-        <span>Conformité</span>
+        <span>Compliance</span>
       </div>
     </div>
     <div class="why-cross"><b>+</b></div>
     <div class="why-side">
       <div class="wn">02</div>
-      <div class="wt" data-i18n="why.right.title">Finance &amp; contrôle</div>
-      <div class="wd" data-i18n="why.right.desc">Comptabilité financière, SAP, analyse de coûts — les compétences que je construis pour transformer une donnée brute en décision chiffrée, argumentée et partageable.</div>
+      <div class="wt" data-i18n="why.right.title">Finance &amp; control</div>
+      <div class="wd" data-i18n="why.right.desc">Financial accounting, SAP, cost analysis — the skills I am building to turn raw data into a quantified, argued and shareable decision.</div>
       <div class="wl">
         <span>SAP</span>
         <span>Reporting</span>
@@ -1474,22 +1496,22 @@ button{font-family:inherit}
 
 <section class="newsletter" id="contact">
   <div class="news-left rv">
-    <h2 data-i18n="contact.title">Prêt à rejoindre l'équipe Finance d'ofi.</h2>
-    <p data-i18n="contact.p">Disponible pour le poste de Finance Graduate Trainee à Douala — vérification des factures, saisie comptable sous SAP, rapprochements et reporting.</p>
+    <h2 data-i18n="contact.title">Ready to join ofi's Finance team.</h2>
+    <p data-i18n="contact.p">Available for the Finance Graduate Trainee position at ofi in Douala — invoice verification, accounting entry in SAP, reconciliations and reporting.</p>
   </div>
   <div class="news-right rv">
     <a href="tel:+237698385430" class="field"><span>+237 698 385 430</span></a>
     <a href="mailto:davycedricw@outlook.com" class="field"><span>davycedricw@outlook.com</span></a>
-    <a href="#" class="field-btn"><span data-i18n="contact.btn">Télécharger le CV PDF</span></a>
+    <a href="#" class="field-btn"><span data-i18n="contact.btn">Download CV PDF</span></a>
   </div>
 </section>
 
 <footer class="site-foot">
   <div>© 2026 Wongue Davy Cédric</div>
   <nav>
-    <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
-    <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Pourquoi ofi</a>
+    <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Journey</a>
+    <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificates</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Why ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="socials">
@@ -1702,10 +1724,11 @@ var I18N = {
   }
 };
 
-var currentLang = 'fr';
+/* ---- Anglais par défaut ---- */
+var currentLang = 'en';
 
 function t(key){
-  return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.fr[key]) || key;
+  return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key]) || key;
 }
 
 function applyTranslations(){
@@ -1752,15 +1775,16 @@ function setLang(lang){
 }
 
 document.getElementById('langBtn').addEventListener('click', function(){
-  setLang(currentLang === 'fr' ? 'en' : 'fr');
+  setLang(currentLang === 'en' ? 'fr' : 'en');
 });
 
+/* Au chargement : on respecte le choix enregistré, sinon on reste en anglais */
 (function(){
   try{
     var saved = localStorage.getItem('wd_lang');
     if(saved === 'en' || saved === 'fr') currentLang = saved;
   }catch(e){}
-  if(currentLang !== 'fr') applyTranslations();
+  applyTranslations();
 })();
 
 /* ============================================================
@@ -1940,9 +1964,7 @@ var renderCerts;
   var lbCap=document.getElementById('lbCap');
   var lbClose=document.getElementById('lbClose');
 
-  function fmtDate(y){
-    return String(y);
-  }
+  function fmtDate(y){ return String(y); }
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g,function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
