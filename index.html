@@ -95,7 +95,7 @@ button{font-family:inherit}
 .site-head.compact .brand-name{font-size:10px}
 .head-nav{
   display:flex;gap:28px;font-size:11px;font-weight:500;
-  letter-spacing:.02em;justify-self:center;
+  letter-spacing:.02em;justify-self:center;align-items:center;
 }
 .head-nav a{
   color:var(--mut);position:relative;padding-bottom:3px;
@@ -111,6 +111,45 @@ button{font-family:inherit}
 .head-nav a:hover::after{transform:scaleX(1);transform-origin:left center}
 .head-nav a.active{color:var(--ink)}
 .head-nav a.active::after{transform:scaleX(1);transform-origin:left center}
+
+/* Lien "Pourquoi ofi" — mis en avant */
+.head-nav a.nav-highlight{
+  color:var(--orange);
+  font-weight:700;
+  padding:7px 16px;
+  border-radius:99px;
+  background:rgba(245,130,32,.10);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  padding-bottom:7px;
+  animation:navGlow 2.4s ease-in-out infinite;
+}
+.head-nav a.nav-highlight::after{display:none}
+.head-nav a.nav-highlight::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--orange);
+  flex-shrink:0;
+  animation:navDot 1.6s ease-in-out infinite;
+}
+.head-nav a.nav-highlight:hover,
+.head-nav a.nav-highlight.active{
+  color:#fff;
+  background:var(--orange);
+}
+.head-nav a.nav-highlight:hover::before,
+.head-nav a.nav-highlight.active::before{background:#fff}
+@keyframes navGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(245,130,32,.45);transform:scale(1)}
+  50%{box-shadow:0 0 0 10px rgba(245,130,32,0);transform:scale(1.04)}
+}
+@keyframes navDot{
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(245,130,32,.6)}
+  50%{opacity:.5;transform:scale(1.4);box-shadow:0 0 0 6px rgba(245,130,32,0)}
+}
 
 .head-right{
   justify-self:end;
@@ -376,31 +415,56 @@ button{font-family:inherit}
    POURQUOI OFI
    ========================================================= */
 .why-ofi{
-  padding:100px var(--gutter) 80px;
+  padding:120px var(--gutter) 100px;
   border-top:1px solid var(--line);
   position:relative;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(245,130,32,.07), transparent 55%),
+    radial-gradient(ellipse at 85% 100%, rgba(107,27,90,.06), transparent 55%),
+    linear-gradient(180deg,#FFFFFF 0%,#FDFAFB 100%);
+  overflow:hidden;
 }
 .why-ofi::before{
   content:'';position:absolute;top:0;left:var(--gutter);right:var(--gutter);
-  height:1px;background:var(--ink);
+  height:2px;background:linear-gradient(90deg,var(--orange),var(--violet));
   transform:scaleX(0);transform-origin:left;
-  transition:transform 1.2s var(--ease);
+  transition:transform 1.4s var(--ease);
 }
 .why-ofi.visible::before{transform:scaleX(1)}
 
 .why-head{
-  display:grid;grid-template-columns:1fr 1fr;gap:60px;
-  align-items:end;margin-bottom:56px;
+  display:grid;grid-template-columns:1.1fr 1fr;gap:70px;
+  align-items:end;margin-bottom:64px;
 }
 .why-head > div:first-child{display:flex;flex-direction:column}
 .why-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  align-self:flex-start;
   font-family:'IBM Plex Mono',monospace;
-  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange);margin-bottom:16px;font-weight:600;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:#fff;
+  background:var(--orange);
+  padding:9px 18px;
+  border-radius:99px;
+  margin-bottom:26px;font-weight:700;
+  box-shadow:0 10px 24px -10px rgba(245,130,32,.6);
+  animation:whyBadgePulse 3s ease-in-out infinite;
+}
+.why-label::before{
+  content:'';
+  width:6px;height:6px;border-radius:50%;
+  background:#fff;
+  animation:navDot 1.6s ease-in-out infinite;
+}
+@keyframes whyBadgePulse{
+  0%,100%{transform:translateY(0);box-shadow:0 10px 24px -10px rgba(245,130,32,.6)}
+  50%{transform:translateY(-2px);box-shadow:0 14px 28px -10px rgba(245,130,32,.8)}
 }
 .why-title{
-  font-size:clamp(28px,3.4vw,46px);
-  font-weight:700;letter-spacing:-.03em;line-height:1.05;
+  font-size:clamp(32px,4vw,56px);
+  font-weight:700;letter-spacing:-.035em;line-height:1.02;
   max-width:14ch;color:var(--ink);
 }
 .why-title em{
@@ -419,7 +483,6 @@ button{font-family:inherit}
 }
 .why-intro b{color:var(--ink);font-weight:600}
 .why-intro + .why-intro{margin-top:14px}
-.why-intro + .why-intro::first-letter{}
 
 /* Dualité */
 .why-dual{
@@ -427,7 +490,13 @@ button{font-family:inherit}
   align-items:stretch;
   border:1px solid var(--line);
   position:relative;overflow:hidden;
-  background:#FDFAFB;
+  background:#fff;
+  box-shadow:0 30px 70px -40px rgba(26,14,22,.25);
+  transition:box-shadow .7s var(--ease), transform .7s var(--ease);
+}
+.why-dual:hover{
+  box-shadow:0 40px 90px -40px rgba(107,27,90,.3);
+  transform:translateY(-3px);
 }
 .why-dual::before{
   content:'';position:absolute;
@@ -439,20 +508,20 @@ button{font-family:inherit}
 .why-dual:hover::before{left:100%}
 
 .why-side{
-  padding:48px 44px;
+  padding:56px 50px;
   position:relative;
   transition:background .7s var(--ease);
 }
-.why-side:hover{background:rgba(107,27,90,.03)}
+.why-side:hover{background:rgba(107,27,90,.035)}
 .why-side .wn{
   font-family:'IBM Plex Mono',monospace;
-  font-size:11px;letter-spacing:.18em;
-  color:var(--orange);margin-bottom:22px;font-weight:600;
+  font-size:12px;letter-spacing:.2em;
+  color:var(--orange);margin-bottom:24px;font-weight:700;
 }
 .why-side .wt{
-  font-size:clamp(18px,1.9vw,24px);
-  font-weight:700;letter-spacing:-.02em;line-height:1.2;
-  margin-bottom:16px;color:var(--ink);
+  font-size:clamp(20px,2.1vw,28px);
+  font-weight:700;letter-spacing:-.025em;line-height:1.15;
+  margin-bottom:18px;color:var(--ink);
 }
 .why-side .wd{
   font-size:12.5px;color:var(--mut);line-height:1.75;
@@ -950,7 +1019,7 @@ button{font-family:inherit}
   color:var(--mut);font-weight:500;
   gap:20px;flex-wrap:wrap;
 }
-.site-foot nav{display:flex;gap:22px;flex-wrap:wrap}
+.site-foot nav{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
 .site-foot nav a{
   position:relative;
   transition:color .4s var(--ease), letter-spacing .4s var(--ease);
@@ -962,6 +1031,24 @@ button{font-family:inherit}
 }
 .site-foot nav a:hover{color:var(--ink);letter-spacing:.12em}
 .site-foot nav a:hover::after{transform:scaleX(1)}
+.site-foot nav a.nav-highlight{
+  color:var(--orange);
+  font-weight:700;
+  padding:5px 12px;
+  border-radius:99px;
+  background:rgba(245,130,32,.10);
+  display:inline-flex;align-items:center;gap:6px;
+  animation:navGlow 2.4s ease-in-out infinite;
+}
+.site-foot nav a.nav-highlight::after{display:none}
+.site-foot nav a.nav-highlight::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--orange);
+  animation:navDot 1.6s ease-in-out infinite;
+}
+.site-foot nav a.nav-highlight:hover{color:#fff;background:var(--orange)}
+.site-foot nav a.nav-highlight:hover::before{background:#fff}
+
 .socials{display:flex;gap:14px}
 .socials a{
   width:22px;height:22px;border:1px solid var(--line);border-radius:50%;
@@ -1138,7 +1225,7 @@ button{font-family:inherit}
   <nav class="head-nav">
     <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
     <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi">Pourquoi ofi</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Pourquoi ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="head-right">
@@ -1356,7 +1443,7 @@ button{font-family:inherit}
     </div>
     <div>
       <p class="why-intro" data-i18n="why.intro">Chez ofi, mes deux centres d'intérêt — la <b>rigueur industrielle</b> et la <b>discipline financière</b> — ne s'opposent pas : ils se rejoignent.</p>
-      <p class="why-intro" data-i18n="why.intro2">Comprendre une chaîne de production, c'est déjà comprendre un cycle de coûts. Sécuriser une matière première, c'est déjà sécuriser une marge.</p>
+      <p class="why-intro" data-i18n="why.intro2">Comprendre une chaîne de production, c'est déjà comprendre un cycle de coûts. Sécuriser une matière première, c'est déjà sécuriser une marge. Rejoindre ofi, c'est travailler à l'intersection exacte de ce que je sais faire et de ce que je veux devenir.</p>
     </div>
   </div>
 
@@ -1402,7 +1489,7 @@ button{font-family:inherit}
   <nav>
     <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
     <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi">Pourquoi ofi</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi" class="nav-highlight">Pourquoi ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="socials">
@@ -1633,7 +1720,6 @@ function applyTranslations(){
     if(val) el.innerHTML = val;
   });
 
-  /* Rejouer l'animation mot-à-mot du hero */
   var heroEl=document.getElementById('heroTitle');
   if(heroEl){
     heroEl.querySelectorAll('.word > span').forEach(function(s){
@@ -1643,7 +1729,6 @@ function applyTranslations(){
     });
   }
 
-  /* Rejouer l'animation mot-à-mot des titres de section */
   document.querySelectorAll('.h-big').forEach(function(h){
     h.classList.remove('on');
     void h.offsetWidth;
