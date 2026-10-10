@@ -911,6 +911,59 @@ button{font-family:inherit}
   color:#fff;line-height:1.3;
 }
 
+/* ---------- REVEAL INTERNE (lightbox) ---------- */
+.lb .img-wrap{
+  position:relative;
+  display:inline-block;
+  animation:lbIn .6s var(--ease-spring) both;
+}
+.lb .img-wrap img{
+  display:block;
+  max-width:92vw;max-height:82vh;
+  background:#fff;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+  transition:filter .8s var(--ease), transform .8s var(--ease);
+}
+.lb .img-wrap.blurred img{
+  filter:blur(28px) saturate(.55);
+  transform:scale(1.02);
+  pointer-events:none;
+  user-select:none;
+}
+.lb .reveal-btn{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  padding:14px 28px;
+  border:1px solid rgba(255,255,255,.55);
+  background:rgba(26,14,22,.65);
+  color:#fff;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  transition:background .35s var(--ease), border-color .35s var(--ease),
+             letter-spacing .35s var(--ease), transform .35s var(--ease);
+  z-index:3;
+}
+.lb .reveal-btn::before{
+  content:'';
+  display:inline-block;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--orange);
+  margin-right:10px;
+  vertical-align:middle;
+  animation:pulseDot 1.8s ease-in-out infinite;
+}
+.lb .reveal-btn:hover{
+  background:var(--orange);
+  border-color:var(--orange);
+  letter-spacing:.28em;
+  transform:translate(-50%,-50%) scale(1.04);
+}
+.lb .img-wrap:not(.blurred) .reveal-btn{display:none}
+
 /* ---------- REVEAL ---------- */
 .rv{opacity:0;transform:translateY(24px);
   transition:opacity .9s var(--ease), transform .9s var(--ease)}
@@ -1285,6 +1338,7 @@ var I18N = {
 
     'soon.title': 'Aperçu en cours<br>de mise à jour',
     'soon.long': 'Aperçu en cours de mise à jour',
+    'reveal.btn': 'Révéler le document',
 
     'doc.diplome': "Diplôme d'ingénieur des procédés — Université Catholique Saint-Jérôme de Douala",
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
@@ -1367,6 +1421,7 @@ var I18N = {
 
     'soon.title': 'Preview being<br>updated',
     'soon.long': 'Preview being updated',
+    'reveal.btn': 'Reveal document',
 
     'doc.diplome': "Process Engineering Degree — Université Catholique Saint-Jérôme de Douala",
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
@@ -1382,35 +1437,29 @@ function t(key){
 }
 
 function applyTranslations(){
-  /* Textes simples */
   document.querySelectorAll('[data-i18n]').forEach(function(el){
     var key = el.getAttribute('data-i18n');
     var val = t(key);
     if(val) el.textContent = val;
   });
-  /* Contenus HTML (garde les balises internes) */
   document.querySelectorAll('[data-i18n-html]').forEach(function(el){
     var key = el.getAttribute('data-i18n-html');
     var val = t(key);
     if(val) el.innerHTML = val;
   });
 
-  /* Rejouer les animations de titres mot à mot */
   document.querySelectorAll('.h-big').forEach(function(h){
     h.classList.remove('on');
     void h.offsetWidth;
     setTimeout(function(){h.classList.add('on');}, 50);
   });
 
-  /* Mettre à jour le lang du document */
   document.documentElement.lang = currentLang;
 
-  /* Mettre à jour le bouton */
   document.querySelectorAll('.lang-btn .lg').forEach(function(s){
     s.classList.toggle('active', s.getAttribute('data-lang') === currentLang);
   });
 
-  /* Re-render les certificats avec les bons noms */
   if(typeof renderCerts === 'function') renderCerts();
 }
 
@@ -1421,12 +1470,10 @@ function setLang(lang){
   applyTranslations();
 }
 
-/* Bouton de langue */
 document.getElementById('langBtn').addEventListener('click', function(){
   setLang(currentLang === 'fr' ? 'en' : 'fr');
 });
 
-/* Restauration au chargement */
 (function(){
   try{
     var saved = localStorage.getItem('wd_lang');
@@ -1666,14 +1713,31 @@ var renderCerts;
     var c=DOCUMENTS[idx];
     var name = t(c.key);
     lbContent.innerHTML='';
+
     if(c.type.indexOf('pdf')===0){
       var iframe=document.createElement('iframe');iframe.src=c.data;lbContent.appendChild(iframe);
     }else{
-      var img=document.createElement('img');img.src=c.data;img.alt=name;
+      var wrap=document.createElement('div');
+      wrap.className='img-wrap blurred';
+
+      var img=document.createElement('img');
+      img.src=c.data;img.alt=name;
       img.onerror=function(){
         lbContent.innerHTML='<div class="soonbox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>'+t('soon.long')+'</b></div>';
       };
-      lbContent.appendChild(img);
+      wrap.appendChild(img);
+
+      var revealBtn=document.createElement('button');
+      revealBtn.type='button';
+      revealBtn.className='reveal-btn';
+      revealBtn.textContent=t('reveal.btn');
+      revealBtn.addEventListener('click',function(e){
+        e.stopPropagation();
+        wrap.classList.remove('blurred');
+      });
+      wrap.appendChild(revealBtn);
+
+      lbContent.appendChild(wrap);
     }
     lbCap.textContent=name;
     lb.classList.add('open');
