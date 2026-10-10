@@ -662,9 +662,14 @@ button{font-family:inherit}
 .cert-card:hover .cert-thumb::before{opacity:1}
 .cert-thumb img{
   width:100%;height:100%;object-fit:cover;object-position:top center;
-  transition:transform 1s var(--ease);
+  filter:blur(14px) saturate(.65);
+  transform:scale(1.12);
+  transition:transform 1s var(--ease), filter 1s var(--ease);
 }
-.cert-card:hover .cert-thumb img{transform:scale(1.06) rotate(.5deg)}
+.cert-card:hover .cert-thumb img{
+  transform:scale(1.2) rotate(.5deg);
+  filter:blur(12px) saturate(.75);
+}
 .cert-thumb .soon{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:10px;padding:16px;text-align:center;
@@ -946,6 +951,7 @@ button{font-family:inherit}
   transition:background .35s var(--ease), border-color .35s var(--ease),
              letter-spacing .35s var(--ease), transform .35s var(--ease);
   z-index:3;
+  margin-top:38px;
 }
 .lb .reveal-btn::before{
   content:'';
@@ -963,6 +969,60 @@ button{font-family:inherit}
   transform:translate(-50%,-50%) scale(1.04);
 }
 .lb .img-wrap:not(.blurred) .reveal-btn{display:none}
+
+/* ---------- LOADING OVERLAY (commun) ---------- */
+.spinner{
+  border-radius:50%;
+  border-style:solid;
+  animation:spinnerSpin 1.1s linear infinite;
+}
+@keyframes spinnerSpin{to{transform:rotate(360deg)}}
+
+/* Vignettes (grille) */
+.cert-thumb .load-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:12px;text-align:center;
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(1px);
+  -webkit-backdrop-filter:blur(1px);
+  z-index:2;pointer-events:none;
+}
+.cert-thumb .load-overlay .spinner{
+  width:24px;height:24px;
+  border-width:2px;
+  border-color:rgba(107,27,90,.15);
+  border-top-color:var(--violet);
+  flex-shrink:0;
+}
+.cert-thumb .load-overlay .load-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--violet);font-weight:600;line-height:1.3;
+}
+.cert-card:hover .cert-thumb .load-overlay .load-label{letter-spacing:.2em}
+
+/* Lightbox */
+.lb .img-wrap .load-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:24px;text-align:center;
+  background:rgba(26,14,22,.4);
+  z-index:2;pointer-events:none;
+  transition:opacity .5s var(--ease);
+}
+.lb .img-wrap .load-overlay .spinner{
+  width:34px;height:34px;
+  border-width:2px;
+  border-color:rgba(255,255,255,.18);
+  border-top-color:var(--orange);
+}
+.lb .img-wrap .load-overlay .load-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:#fff;font-weight:600;
+}
+.lb .img-wrap:not(.blurred) .load-overlay{opacity:0;visibility:hidden}
 
 /* ---------- REVEAL ---------- */
 .rv{opacity:0;transform:translateY(24px);
@@ -1339,6 +1399,7 @@ var I18N = {
     'soon.title': 'Aperçu en cours<br>de mise à jour',
     'soon.long': 'Aperçu en cours de mise à jour',
     'reveal.btn': 'Révéler le document',
+    'preview.loading': "Chargement de l'aperçu…",
 
     'doc.diplome': "Diplôme d'ingénieur des procédés — Université Catholique Saint-Jérôme de Douala",
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
@@ -1422,6 +1483,7 @@ var I18N = {
     'soon.title': 'Preview being<br>updated',
     'soon.long': 'Preview being updated',
     'reveal.btn': 'Reveal document',
+    'preview.loading': 'Loading preview…',
 
     'doc.diplome': "Process Engineering Degree — Université Catholique Saint-Jérôme de Douala",
     'doc.sap': 'SAP Business Analyst Professional Certificate — SAP',
@@ -1674,6 +1736,18 @@ var renderCerts;
       '<b>'+t('soon.title')+'</b>'+
     '</div>';
   }
+  function loadOverlayLb(){
+    return '<div class="load-overlay">'+
+      '<div class="spinner"></div>'+
+      '<div class="load-label">'+t('preview.loading')+'</div>'+
+    '</div>';
+  }
+  function loadOverlayThumb(){
+    return '<div class="load-overlay">'+
+      '<div class="spinner"></div>'+
+      '<div class="load-label">'+t('preview.loading')+'</div>'+
+    '</div>';
+  }
 
   renderCerts = function(){
     Array.prototype.slice.call(grid.children).forEach(function(c){
@@ -1697,6 +1771,7 @@ var renderCerts;
         img.src=c.data;img.alt=name;img.loading='lazy';
         img.onerror=function(){thumb.innerHTML=soonBox();};
         thumb.appendChild(img);
+        thumb.insertAdjacentHTML('beforeend', loadOverlayThumb());
       }
 
       var info=document.createElement('div');
@@ -1726,6 +1801,7 @@ var renderCerts;
         lbContent.innerHTML='<div class="soonbox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>'+t('soon.long')+'</b></div>';
       };
       wrap.appendChild(img);
+      wrap.insertAdjacentHTML('beforeend', loadOverlayLb());
 
       var revealBtn=document.createElement('button');
       revealBtn.type='button';
