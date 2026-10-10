@@ -32,7 +32,7 @@ body{
   font-size:13px;line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-#histoire,#certificats,#competences,#contact,section[id]{
+#histoire,#certificats,#competences,#contact,#ofi,section[id]{
   scroll-margin-top:96px;
 }
 img{display:block;max-width:100%}
@@ -119,7 +119,6 @@ button{font-family:inherit}
   gap:10px;
 }
 
-/* Bouton de langue */
 .lang-btn{
   display:inline-flex;
   align-items:center;
@@ -161,7 +160,7 @@ button{font-family:inherit}
   .head-nav{gap:14px;font-size:10px}
   .head-nav a:nth-child(3){display:none}
   html{scroll-padding-top:80px}
-  #histoire,#certificats,#competences,#contact,section[id]{scroll-margin-top:80px}
+  #histoire,#certificats,#competences,#contact,#ofi,section[id]{scroll-margin-top:80px}
 }
 @media(max-width:520px){
   .brand-name{display:none}
@@ -284,52 +283,31 @@ button{font-family:inherit}
   transform:translateY(0);
 }
 .hero-overlay .rule{
-  width:32px;
-  height:2px;
-  background:var(--orange);
-  margin-bottom:14px;
-  transform:scaleX(0);
-  transform-origin:left;
+  width:32px;height:2px;background:var(--orange);margin-bottom:14px;
+  transform:scaleX(0);transform-origin:left;
   transition:transform .7s var(--ease) .1s;
 }
 .hero-right:hover .hero-overlay .rule,
-.hero-right:focus-within .hero-overlay .rule{
-  transform:scaleX(1);
-}
+.hero-right:focus-within .hero-overlay .rule{transform:scaleX(1);}
 .hero-overlay .h-name{
   font-family:'Inter',sans-serif;
   font-size:clamp(22px,2.6vw,32px);
-  font-weight:700;
-  letter-spacing:-.025em;
-  line-height:1.1;
-  color:#fff;
-  transform:translateY(18px);
+  font-weight:700;letter-spacing:-.025em;line-height:1.1;
+  color:#fff;transform:translateY(18px);
   transition:transform .65s var(--ease) .05s;
 }
 .hero-overlay .h-name em{
-  display:block;
-  font-style:normal;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--orange);
-  margin-top:6px;
-  opacity:0;
-  transform:translateY(10px);
+  display:block;font-style:normal;font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--orange);margin-top:6px;
+  opacity:0;transform:translateY(10px);
   transition:transform .65s var(--ease) .15s, opacity .55s var(--ease) .15s;
 }
 .hero-overlay .h-meta{
-  margin-top:18px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:16px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;
-  color:rgba(255,255,255,.85);
-  letter-spacing:.03em;
-  opacity:0;
-  transform:translateY(12px);
+  margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:rgba(255,255,255,.85);letter-spacing:.03em;
+  opacity:0;transform:translateY(12px);
   transition:transform .65s var(--ease) .22s, opacity .55s var(--ease) .22s;
 }
 .hero-overlay .h-meta span{display:inline-flex;align-items:center;gap:6px}
@@ -395,6 +373,131 @@ button{font-family:inherit}
 @media(max-width:760px){.section-ss .head-row{flex-direction:column;gap:16px}}
 
 /* =========================================================
+   POURQUOI OFI
+   ========================================================= */
+.why-ofi{
+  padding:100px var(--gutter) 80px;
+  border-top:1px solid var(--line);
+  position:relative;
+}
+.why-ofi::before{
+  content:'';position:absolute;top:0;left:var(--gutter);right:var(--gutter);
+  height:1px;background:var(--ink);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1.2s var(--ease);
+}
+.why-ofi.visible::before{transform:scaleX(1)}
+
+.why-head{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  align-items:end;margin-bottom:56px;
+}
+.why-head > div:first-child{display:flex;flex-direction:column}
+.why-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:16px;font-weight:600;
+}
+.why-title{
+  font-size:clamp(28px,3.4vw,46px);
+  font-weight:700;letter-spacing:-.03em;line-height:1.05;
+  max-width:14ch;color:var(--ink);
+}
+.why-title em{
+  font-style:normal;color:var(--violet);
+  position:relative;display:inline-block;
+}
+.why-title em::after{
+  content:'';position:absolute;
+  left:-4px;right:-4px;bottom:4px;height:10px;
+  background:rgba(245,130,32,.18);
+  z-index:-1;
+}
+.why-intro{
+  font-size:13px;color:var(--mut);line-height:1.8;
+  max-width:52ch;
+}
+.why-intro b{color:var(--ink);font-weight:600}
+.why-intro + .why-intro{margin-top:14px}
+.why-intro + .why-intro::first-letter{}
+
+/* Dualité */
+.why-dual{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:stretch;
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+  background:#FDFAFB;
+}
+.why-dual::before{
+  content:'';position:absolute;
+  top:0;left:-100%;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--orange),transparent);
+  transition:left 1.6s var(--ease);
+  z-index:3;
+}
+.why-dual:hover::before{left:100%}
+
+.why-side{
+  padding:48px 44px;
+  position:relative;
+  transition:background .7s var(--ease);
+}
+.why-side:hover{background:rgba(107,27,90,.03)}
+.why-side .wn{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.18em;
+  color:var(--orange);margin-bottom:22px;font-weight:600;
+}
+.why-side .wt{
+  font-size:clamp(18px,1.9vw,24px);
+  font-weight:700;letter-spacing:-.02em;line-height:1.2;
+  margin-bottom:16px;color:var(--ink);
+}
+.why-side .wd{
+  font-size:12.5px;color:var(--mut);line-height:1.75;
+  max-width:44ch;
+}
+.why-side .wl{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;
+}
+.why-side .wl span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mut);padding:6px 12px;
+  border:1px solid var(--line);border-radius:99px;
+  transition:border-color .4s var(--ease), color .4s var(--ease), background .4s var(--ease);
+}
+.why-side:hover .wl span{border-color:var(--ink);color:var(--ink)}
+
+.why-cross{
+  display:flex;align-items:center;justify-content:center;
+  width:90px;background:var(--panel);
+  color:var(--orange);font-size:22px;font-weight:300;
+  position:relative;
+}
+.why-cross::before{
+  content:'';position:absolute;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(245,130,32,.35);
+  animation:whyPulse 2.4s ease-in-out infinite;
+}
+@keyframes whyPulse{
+  0%,100%{transform:scale(1);opacity:.4}
+  50%{transform:scale(1.25);opacity:.9}
+}
+.why-cross b{position:relative;z-index:1;font-weight:400;line-height:1}
+
+@media(max-width:820px){
+  .why-ofi{padding:70px var(--gutter) 60px}
+  .why-head{grid-template-columns:1fr;gap:24px;margin-bottom:40px}
+  .why-dual{grid-template-columns:1fr}
+  .why-cross{width:100%;height:70px}
+  .why-cross::before{width:38px;height:38px}
+  .why-side{padding:34px 26px}
+}
+
+/* =========================================================
    CARTES PARCOURS
    ========================================================= */
 .blend-cards{
@@ -453,8 +556,7 @@ button{font-family:inherit}
 }
 .blend-card:hover .blend-num,
 .blend-card:focus-within .blend-num{
-  transform:translateY(-3px) scale(1.1);
-  color:#fff;
+  transform:translateY(-3px) scale(1.1);color:#fff;
 }
 .blend-intro{
   position:absolute;top:96px;left:22px;right:22px;
@@ -489,8 +591,7 @@ button{font-family:inherit}
 }
 .blend-card:hover .blend-name .circ,
 .blend-card:focus-within .blend-name .circ{
-  transform:rotate(180deg) scale(1.2);
-  border-color:#fff;
+  transform:rotate(180deg) scale(1.2);border-color:#fff;
 }
 .blend-card:hover .blend-name .circ::after,
 .blend-card:focus-within .blend-name .circ::after{background:#fff;transform:scale(1.4)}
@@ -942,7 +1043,6 @@ button{font-family:inherit}
 }
 @keyframes spinnerSpin{to{transform:rotate(360deg)}}
 
-/* Vignettes (grille) */
 .cert-thumb .load-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -966,7 +1066,6 @@ button{font-family:inherit}
 }
 .cert-card:hover .cert-thumb .load-overlay .load-label{letter-spacing:.2em}
 
-/* Lightbox */
 .lb .img-wrap .load-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -1039,7 +1138,7 @@ button{font-family:inherit}
   <nav class="head-nav">
     <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
     <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#competences" data-target="competences" data-i18n="nav.trajectoire">Trajectoire</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi">Pourquoi ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="head-right">
@@ -1054,7 +1153,7 @@ button{font-family:inherit}
 
 <section class="hero-ss" id="top">
   <div class="hero-left">
-    <h1 id="heroTitle">
+    <h1 id="heroTitle" data-i18n-html="hero.title">
       <span class="word"><span>Ingénieur</span></span>
       <span class="word"><span>des</span></span>
       <span class="word"><span>procédés,</span></span>
@@ -1096,7 +1195,7 @@ button{font-family:inherit}
       <span class="word"><span>quatre</span></span>
       <span class="word"><span>temps.</span></span>
     </h2>
-    <p class="section-lede rv" data-i18n="parcours.lede">Diplômé ingénieur des procédés (2024), formé à la comptabilité financière par l'Université de Pennsylvanie, certifié SAP Business Analyst et formé à l'audit interne — une trajectoire qui relie l'exigence industrielle aux réflexes du contrôle financier.</p>
+    <p class="section-lede rv" data-i18n="parcours.lede">Diplômé ingénieur des procédés (2025), formé à la comptabilité financière par l'Université de Pennsylvanie, certifié SAP Business Analyst et formé à l'audit interne — une trajectoire qui relie l'exigence industrielle aux réflexes du contrôle financier.</p>
   </div>
 
   <div class="blend-cards">
@@ -1246,6 +1345,46 @@ button{font-family:inherit}
   </div>
 </section>
 
+<!-- =========================================================
+     POURQUOI OFI
+     ========================================================= -->
+<section class="why-ofi" id="ofi">
+  <div class="why-head">
+    <div>
+      <div class="why-label" data-i18n="why.label">Pourquoi ofi ?</div>
+      <h2 class="why-title" data-i18n-html="why.title">Là où mes <em>deux mondes</em> se rencontrent.</h2>
+    </div>
+    <div>
+      <p class="why-intro" data-i18n="why.intro">Chez ofi, mes deux centres d'intérêt — la <b>rigueur industrielle</b> et la <b>discipline financière</b> — ne s'opposent pas : ils se rejoignent.</p>
+      <p class="why-intro" data-i18n="why.intro2">Comprendre une chaîne de production, c'est déjà comprendre un cycle de coûts. Sécuriser une matière première, c'est déjà sécuriser une marge.</p>
+    </div>
+  </div>
+
+  <div class="why-dual">
+    <div class="why-side">
+      <div class="wn">01</div>
+      <div class="wt" data-i18n="why.left.title">Ingénierie des procédés</div>
+      <div class="wd" data-i18n="why.left.desc">Contrôle qualité, standardisation, bilans matière et énergie — les gestes que j'ai pratiqués sur le terrain et qui m'ont appris à lire une donnée, à suivre un écart et à sécuriser un process.</div>
+      <div class="wl">
+        <span>Qualité</span>
+        <span>Process</span>
+        <span>Conformité</span>
+      </div>
+    </div>
+    <div class="why-cross"><b>+</b></div>
+    <div class="why-side">
+      <div class="wn">02</div>
+      <div class="wt" data-i18n="why.right.title">Finance &amp; contrôle</div>
+      <div class="wd" data-i18n="why.right.desc">Comptabilité financière, SAP, analyse de coûts — les compétences que je construis pour transformer une donnée brute en décision chiffrée, argumentée et partageable.</div>
+      <div class="wl">
+        <span>SAP</span>
+        <span>Reporting</span>
+        <span>Audit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="newsletter" id="contact">
   <div class="news-left rv">
     <h2 data-i18n="contact.title">Prêt à rejoindre l'équipe Finance d'ofi.</h2>
@@ -1263,7 +1402,7 @@ button{font-family:inherit}
   <nav>
     <a href="#histoire" data-target="histoire" data-i18n="nav.parcours">Parcours</a>
     <a href="#certificats" data-target="certificats" data-i18n="nav.certificats">Certificats</a>
-    <a href="#competences" data-target="competences" data-i18n="nav.trajectoire">Trajectoire</a>
+    <a href="#ofi" data-target="ofi" data-i18n="nav.ofi">Pourquoi ofi</a>
     <a href="#contact" data-target="contact" data-i18n="nav.contact">Contact</a>
   </nav>
   <div class="socials">
@@ -1289,8 +1428,10 @@ var I18N = {
     'nav.parcours': 'Parcours',
     'nav.certificats': 'Certificats',
     'nav.trajectoire': 'Trajectoire',
+    'nav.ofi': 'Pourquoi ofi',
     'nav.contact': 'Contact',
 
+    'hero.title': '<span class="word"><span>Ingénieur</span></span> <span class="word"><span>des</span></span> <span class="word"><span>procédés,</span></span> <span class="word"><span>certifié</span></span> <span class="word"><span><em>SAP</em></span></span> <span class="word"><span>&amp;</span></span> <span class="word"><span>comptabilité</span></span> <span class="word"><span>financière.</span></span>',
     'hero.lede': "Une candidature pour le poste de Finance Graduate Trainee chez ofi Douala — rigueur analytique, souci du détail, intégrité.",
     'hero.link': 'Voir les documents',
     'hero.role': 'Finance Graduate Trainee',
@@ -1354,6 +1495,15 @@ var I18N = {
     'chart.legend1': 'Excellence industrielle & qualité',
     'chart.legend2': 'Compétences finance & data',
 
+    'why.label': 'Pourquoi ofi ?',
+    'why.title': 'Là où mes <em>deux mondes</em> se rencontrent.',
+    'why.intro': "Chez ofi, mes deux centres d'intérêt — la <b>rigueur industrielle</b> et la <b>discipline financière</b> — ne s'opposent pas : ils se rejoignent.",
+    'why.intro2': "Comprendre une chaîne de production, c'est déjà comprendre un cycle de coûts. Sécuriser une matière première, c'est déjà sécuriser une marge. Rejoindre ofi, c'est travailler à l'intersection exacte de ce que je sais faire et de ce que je veux devenir.",
+    'why.left.title': 'Ingénierie des procédés',
+    'why.left.desc': "Contrôle qualité, standardisation, bilans matière et énergie — les gestes que j'ai pratiqués sur le terrain et qui m'ont appris à lire une donnée, à suivre un écart et à sécuriser un process.",
+    'why.right.title': 'Finance & contrôle',
+    'why.right.desc': "Comptabilité financière, SAP, analyse de coûts — les compétences que je construis pour transformer une donnée brute en décision chiffrée, argumentée et partageable.",
+
     'contact.title': "Prêt à rejoindre l'équipe Finance d'ofi.",
     'contact.p': "Disponible pour le poste de Finance Graduate Trainee à Douala — vérification des factures, saisie comptable sous SAP, rapprochements et reporting.",
     'contact.btn': 'Télécharger le CV PDF',
@@ -1373,8 +1523,10 @@ var I18N = {
     'nav.parcours': 'Journey',
     'nav.certificats': 'Certificates',
     'nav.trajectoire': 'Path',
+    'nav.ofi': 'Why ofi',
     'nav.contact': 'Contact',
 
+    'hero.title': '<span class="word"><span>Process</span></span> <span class="word"><span>Engineer,</span></span> <span class="word"><span>certified</span></span> <span class="word"><span><em>SAP</em></span></span> <span class="word"><span>&amp;</span></span> <span class="word"><span>financial</span></span> <span class="word"><span>accounting.</span></span>',
     'hero.lede': "An application for the Finance Graduate Trainee position at ofi Douala — analytical rigour, attention to detail, integrity.",
     'hero.link': 'View documents',
     'hero.role': 'Finance Graduate Trainee',
@@ -1438,6 +1590,15 @@ var I18N = {
     'chart.legend1': 'Industrial excellence & quality',
     'chart.legend2': 'Finance & data skills',
 
+    'why.label': 'Why ofi?',
+    'why.title': 'Where my <em>two worlds</em> meet.',
+    'why.intro': "At ofi, my two centres of interest — <b>industrial rigour</b> and <b>financial discipline</b> — do not oppose each other: they come together.",
+    'why.intro2': "Understanding a production line already means understanding a cost cycle. Securing a raw material already means securing a margin. Joining ofi means working at the exact intersection of what I know how to do and what I want to become.",
+    'why.left.title': 'Process engineering',
+    'why.left.desc': "Quality control, standardisation, mass and energy balances — the gestures I practised in the field and that taught me to read data, track a variance and secure a process.",
+    'why.right.title': 'Finance & control',
+    'why.right.desc': "Financial accounting, SAP, cost analysis — the skills I am building to turn raw data into a quantified, argued and shareable decision.",
+
     'contact.title': "Ready to join ofi's Finance team.",
     'contact.p': "Available for the Finance Graduate Trainee position at ofi in Douala — invoice verification, accounting entry in SAP, reconciliations and reporting.",
     'contact.btn': 'Download CV PDF',
@@ -1472,6 +1633,17 @@ function applyTranslations(){
     if(val) el.innerHTML = val;
   });
 
+  /* Rejouer l'animation mot-à-mot du hero */
+  var heroEl=document.getElementById('heroTitle');
+  if(heroEl){
+    heroEl.querySelectorAll('.word > span').forEach(function(s){
+      s.style.animation='none';
+      void s.offsetWidth;
+      s.style.animation='';
+    });
+  }
+
+  /* Rejouer l'animation mot-à-mot des titres de section */
   document.querySelectorAll('.h-big').forEach(function(h){
     h.classList.remove('on');
     void h.offsetWidth;
@@ -1619,7 +1791,7 @@ var sectionIO=new IntersectionObserver(function(es){
     }
   });
 },{threshold:.15});
-document.querySelectorAll('.section-ss').forEach(function(s){sectionIO.observe(s)});
+document.querySelectorAll('.section-ss, .why-ofi').forEach(function(s){sectionIO.observe(s)});
 
 document.querySelectorAll('.h-big').forEach(function(h){
   var rect=h.getBoundingClientRect();
@@ -1797,131 +1969,4 @@ var renderCerts;
       particles.push({
         curve:i%curves.length,
         x:Math.random()*W,
-        speed:0.35+Math.random()*1.6,
-        r:1+Math.random()*2.2,
-        phase:Math.random()*Math.PI*2
-      });
-    }
-  }
-  function initBgDots(){
-    bgDots=[];
-    for(var i=0;i<38;i++){
-      bgDots.push({
-        x:Math.random()*W,
-        y:Math.random()*H,
-        r:0.4+Math.random()*1.1,
-        phase:Math.random()*Math.PI*2,
-        speed:0.4+Math.random()*0.8
-      });
-    }
-  }
-  function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,2);
-    var r=cv.getBoundingClientRect();
-    W=r.width;H=r.height;
-    cv.width=W*dpr;cv.height=H*dpr;
-    cx.setTransform(dpr,0,0,dpr,0,0);
-    initParticles();
-    initBgDots();
-  }
-  function yAt(c,x,time){
-    var y1=Math.sin(x*c.freq + time*c.speed + c.phase)*c.amp;
-    var y2=Math.sin(x*c.freq*2.4 + time*c.speed*0.6 + c.phase*1.3)*c.amp*0.28;
-    return H*c.y0 + y1 + y2;
-  }
-  function addSparkle(x,y,color){
-    if(sparkles.length>40)return;
-    sparkles.push({
-      x:x,y:y,
-      vx:(Math.random()-.5)*1.6,
-      vy:(Math.random()-.5)*1.6 - 0.4,
-      life:1,
-      r:1+Math.random()*1.8,
-      color:color
-    });
-  }
-  function loop(now){
-    t0=now*0.001;
-    cx.clearRect(0,0,W,H);
-
-    cx.strokeStyle='rgba(26,14,22,.045)';
-    cx.lineWidth=1;
-    for(var i=1;i<5;i++){
-      var gy=H*i/5;
-      cx.beginPath();cx.moveTo(0,gy);cx.lineTo(W,gy);cx.stroke();
-    }
-
-    bgDots.forEach(function(d){
-      var pulse=0.5+Math.sin(t0*d.speed+d.phase)*0.5;
-      cx.globalAlpha=0.15+pulse*0.25;
-      cx.fillStyle='#6B1B5A';
-      cx.beginPath();cx.arc(d.x,d.y,d.r,0,Math.PI*2);cx.fill();
-    });
-    cx.globalAlpha=1;
-
-    curves.forEach(function(c){
-      cx.beginPath();
-      for(var x=0;x<=W;x+=3){
-        var y=yAt(c,x,t0);
-        if(x===0)cx.moveTo(x,y);else cx.lineTo(x,y);
-      }
-      cx.strokeStyle=c.color;
-      cx.lineWidth=c.width;
-      cx.lineCap='round';
-      cx.lineJoin='round';
-      cx.stroke();
-    });
-
-    particles.forEach(function(p){
-      p.x+=p.speed;
-      if(p.x>W+20){
-        addSparkle(p.x-20,yAt(curves[p.curve],p.x-20,t0),curves[p.curve].particleColor);
-        p.x=-20;
-        p.curve=Math.floor(Math.random()*curves.length);
-      }
-      var c=curves[p.curve];
-      var y=yAt(c,p.x,t0);
-      var pulse=1+Math.sin(t0*3.5+p.phase)*0.35;
-      var r=p.r*pulse;
-
-      var grad=cx.createRadialGradient(p.x,y,0,p.x,y,r*7);
-      grad.addColorStop(0, c.particleColor);
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      cx.globalAlpha=0.45;
-      cx.fillStyle=grad;
-      cx.beginPath();cx.arc(p.x,y,r*7,0,Math.PI*2);cx.fill();
-      cx.globalAlpha=1;
-
-      cx.fillStyle=c.particleColor;
-      cx.beginPath();cx.arc(p.x,y,r,0,Math.PI*2);cx.fill();
-
-      cx.fillStyle='rgba(255,255,255,.65)';
-      cx.beginPath();cx.arc(p.x-r*0.25,y-r*0.25,r*0.35,0,Math.PI*2);cx.fill();
-    });
-
-    sparkles=sparkles.filter(function(s){
-      s.x+=s.vx;s.y+=s.vy;s.vy+=0.03;s.life-=0.02;
-      if(s.life<=0)return false;
-      cx.globalAlpha=s.life*0.8;
-      cx.fillStyle=s.color;
-      cx.beginPath();cx.arc(s.x,s.y,s.r*s.life,0,Math.PI*2);cx.fill();
-      cx.globalAlpha=1;
-      return true;
-    });
-
-    cx.font='500 10px IBM Plex Mono, monospace';
-    cx.fillStyle='rgba(110,92,100,.55)';
-    cx.fillText('2021', 16, H-14);
-    cx.textAlign='right';
-    cx.fillText('2025', W-16, H-14);
-    cx.textAlign='left';
-
-    raf=requestAnimationFrame(loop);
-  }
-  window.addEventListener('resize',resize);
-  resize();
-  raf=requestAnimationFrame(loop);
-})();
-</script>
-</body>
-</html>
+        speed:0.35+Math.random()
