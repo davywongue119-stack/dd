@@ -726,6 +726,17 @@ button{font-family:inherit}
   transform:scale(1.2) rotate(.5deg);
   filter:blur(12px) saturate(.75);
 }
+/* Vignette dont l'aperçu est visible (non floutée) */
+.cert-thumb.preview-visible img{
+  filter:blur(0) saturate(1);
+  transform:scale(1);
+}
+.cert-card:hover .cert-thumb.preview-visible img{
+  transform:scale(1.05);
+  filter:blur(0) saturate(1);
+}
+.cert-thumb.preview-visible .load-overlay{display:none;}
+
 .cert-thumb .soon{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:10px;padding:16px;text-align:center;
@@ -959,8 +970,6 @@ button{font-family:inherit}
   display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;
   color:#fff;line-height:1.3;
 }
-
-/* LIGHTBOX — img-wrap */
 .lb .img-wrap{
   position:relative;display:inline-block;
   animation:lbIn .6s var(--ease-spring) both;
@@ -972,24 +981,15 @@ button{font-family:inherit}
   transition:filter .8s var(--ease), transform .8s var(--ease);
   user-select:none;
 }
-/* Image non-révélable : flou permanent, pas d'interaction */
 .lb .img-wrap.locked img{
-  pointer-events:none;
-  cursor:default;
+  pointer-events:none;cursor:default;
 }
-/* Image révélable */
-.lb .img-wrap.revealable{
-  cursor:pointer;
-}
-.lb .img-wrap.revealable img{
-  pointer-events:none;
-}
-/* État révélé : plus de flou */
+.lb .img-wrap.revealable{cursor:pointer;}
+.lb .img-wrap.revealable img{pointer-events:none;}
 .lb .img-wrap.revealed img{
   filter:blur(0) saturate(1);
   transform:scale(1);
 }
-/* Indication "cliquez pour révéler" */
 .lb .img-wrap.revealable::after{
   content:'';
   position:absolute;top:50%;left:50%;
@@ -1001,20 +1001,16 @@ button{font-family:inherit}
   font-family:'IBM Plex Mono',monospace;
   font-size:10px;font-weight:600;
   letter-spacing:.2em;text-transform:uppercase;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   pointer-events:none;
   transition:opacity .4s var(--ease), transform .4s var(--ease);
   z-index:3;
 }
 .lb .img-wrap.revealable.revealed::after{
-  opacity:0;
-  transform:translate(-50%,-50%) scale(.9);
+  opacity:0;transform:translate(-50%,-50%) scale(.9);
 }
 .lb .img-wrap.revealable:hover::after{
-  background:var(--orange);
-  border-color:var(--orange);
-  letter-spacing:.28em;
+  background:var(--orange);border-color:var(--orange);letter-spacing:.28em;
 }
 
 /* LOADING OVERLAY */
@@ -1038,8 +1034,6 @@ button{font-family:inherit}
   color:var(--violet);font-weight:600;line-height:1.3;
 }
 .cert-card:hover .cert-thumb .load-overlay .load-label{letter-spacing:.2em}
-
-/* Load overlay dans la lightbox */
 .lb .img-wrap .load-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -1056,11 +1050,7 @@ button{font-family:inherit}
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:#fff;font-weight:600;
 }
-/* Cache le spinner quand révélé */
-.lb .img-wrap.revealed .load-overlay{
-  opacity:0;
-  visibility:hidden;
-}
+.lb .img-wrap.revealed .load-overlay{opacity:0;visibility:hidden;}
 
 .rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
 .rv.on{opacity:1;transform:none}
@@ -1774,9 +1764,11 @@ var counterIO=new IntersectionObserver(function(es){
 document.querySelectorAll('[data-count]').forEach(function(el){counterIO.observe(el)});
 
 /* ============================================================
-   CERTIFICATS — 5 visibles
-   Révélables : diplome, penn, c1english
-   Verrouillés : sap, bloomberg
+   CERTIFICATS
+   Révélables (aperçu visible dans la grille + dévoilables en lightbox) :
+     - diplome, penn, c1english
+   Verrouillés (aperçu flou permanent dans la grille + lightbox floue) :
+     - sap, bloomberg
    ============================================================ */
 var renderCerts;
 
@@ -1828,7 +1820,9 @@ var renderCerts;
       card.addEventListener('click',function(){openLightbox(idx);});
 
       var thumb=document.createElement('div');
-      thumb.className='cert-thumb';
+      /* Si revealable → la vignette affiche l'aperçu net (preview-visible) */
+      thumb.className = c.revealable ? 'cert-thumb preview-visible' : 'cert-thumb';
+
       if(c.type.indexOf('pdf')===0){
         thumb.innerHTML=soonBox();
       }else{
@@ -1836,7 +1830,10 @@ var renderCerts;
         img.src=c.data;img.alt=name;img.loading='lazy';
         img.onerror=function(){thumb.innerHTML=soonBox();};
         thumb.appendChild(img);
-        thumb.insertAdjacentHTML('beforeend', loadOverlay());
+        /* Le spinner (load-overlay) n'est ajouté QUE sur les vignettes verrouillées */
+        if(!c.revealable){
+          thumb.insertAdjacentHTML('beforeend', loadOverlay());
+        }
       }
 
       var info=document.createElement('div');
@@ -1858,7 +1855,6 @@ var renderCerts;
       var iframe=document.createElement('iframe');iframe.src=c.data;lbContent.appendChild(iframe);
     }else{
       var wrap=document.createElement('div');
-      /* Si revealable → classe "revealable", sinon classe "locked" */
       wrap.className = c.revealable ? 'img-wrap revealable' : 'img-wrap locked';
 
       var img=document.createElement('img');
@@ -1869,7 +1865,6 @@ var renderCerts;
       wrap.appendChild(img);
       wrap.insertAdjacentHTML('beforeend', loadOverlay());
 
-      /* Click pour révéler si autorisé */
       if(c.revealable){
         wrap.addEventListener('click',function(){
           wrap.classList.add('revealed');
