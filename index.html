@@ -748,17 +748,12 @@ button{font-family:inherit}
 }
 .cert-card:hover .cert-thumb .soon svg{opacity:1;transform:rotate(360deg)}
 .cert-thumb .soon b{font-size:11px;font-weight:600;color:var(--violet);line-height:1.2;}
-.cert-info{padding:14px 14px 16px}
+.cert-info{padding:16px 14px 18px;text-align:center}
 .cert-info .t{
-  font-size:11px;font-weight:600;line-height:1.35;letter-spacing:-.005em;
-  color:var(--ink);margin-bottom:6px;transition:color .4s var(--ease);
+  font-size:11px;font-weight:600;line-height:1.4;letter-spacing:-.005em;
+  color:var(--ink);transition:color .4s var(--ease);
 }
 .cert-card:hover .cert-info .t{color:var(--violet)}
-.cert-info .d{
-  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--mut);
-  letter-spacing:.05em;transition:letter-spacing .5s var(--ease);
-}
-.cert-card:hover .cert-info .d{letter-spacing:.1em}
 .cert-empty{
   grid-column:1/-1;padding:50px 20px;text-align:center;
   border:1px dashed var(--line);color:var(--mut);font-size:12px;
@@ -1470,7 +1465,7 @@ var I18N = {
     'preview.loading': "Chargement de l'aperçu…",
 
     'doc.diplome': "Diplôme d'ingénieur des procédés, Université Catholique Saint-Jérôme de Douala",
-    'doc.c1english': "Certificat d'anglais niveau C1, 2023",
+    'doc.c1english': "Certificat d'anglais niveau C1",
     'doc.sap': 'SAP Business Analyst Professional Certificate, SAP',
     'doc.penn': 'Fundamentals of Finance, University of Pennsylvania',
     'doc.bloomberg': 'Bloomberg Market Concepts (BMC), Bloomberg'
@@ -1565,7 +1560,7 @@ var I18N = {
     'preview.loading': 'Loading preview…',
 
     'doc.diplome': "Process Engineering Degree, Université Catholique Saint-Jérôme de Douala",
-    'doc.c1english': 'English Certificate Level C1, 2023',
+    'doc.c1english': 'English Certificate Level C1',
     'doc.sap': 'SAP Business Analyst Professional Certificate, SAP',
     'doc.penn': 'Fundamentals of Finance, University of Pennsylvania',
     'doc.bloomberg': 'Bloomberg Market Concepts (BMC), Bloomberg'
@@ -1769,16 +1764,17 @@ document.querySelectorAll('[data-count]').forEach(function(el){counterIO.observe
      - diplome, penn, c1english
    Verrouillés (aperçu flou permanent dans la grille + lightbox floue) :
      - sap, bloomberg
+   Dates retirées de l'affichage
    ============================================================ */
 var renderCerts;
 
 (function(){
   var DOCUMENTS=[
-    {key:'doc.diplome',   type:'image/jpeg', year:'2025', data:'diplome-ingenieur-wongue-davy-cedric.jpg', revealable:true},
-    {key:'doc.penn',      type:'image/jpeg', year:'2025', data:'certificat-penn-finance.jpg',              revealable:true},
-    {key:'doc.c1english', type:'image/jpeg', year:'2023', data:'certificat-c1-anglais.jpg',                revealable:true},
-    {key:'doc.sap',       type:'image/jpeg', year:'2026', data:'certificat-sap-business-analyst.jpg',      revealable:false},
-    {key:'doc.bloomberg', type:'image/jpeg', year:'2026', data:'certificat-bloomberg-bmc.jpg',             revealable:false}
+    {key:'doc.diplome',   type:'image/jpeg', data:'diplome-ingenieur-wongue-davy-cedric.jpg', revealable:true},
+    {key:'doc.penn',      type:'image/jpeg', data:'certificat-penn-finance.jpg',              revealable:true},
+    {key:'doc.c1english', type:'image/jpeg', data:'certificat-c1-anglais.jpg',                revealable:true},
+    {key:'doc.sap',       type:'image/jpeg', data:'certificat-sap-business-analyst.jpg',      revealable:false},
+    {key:'doc.bloomberg', type:'image/jpeg', data:'certificat-bloomberg-bmc.jpg',             revealable:false}
   ];
   var grid=document.getElementById('certGrid');
   var empty=document.getElementById('certEmpty');
@@ -1787,7 +1783,6 @@ var renderCerts;
   var lbCap=document.getElementById('lbCap');
   var lbClose=document.getElementById('lbClose');
 
-  function fmtDate(y){ return String(y); }
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g,function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
@@ -1820,7 +1815,6 @@ var renderCerts;
       card.addEventListener('click',function(){openLightbox(idx);});
 
       var thumb=document.createElement('div');
-      /* Si revealable → la vignette affiche l'aperçu net (preview-visible) */
       thumb.className = c.revealable ? 'cert-thumb preview-visible' : 'cert-thumb';
 
       if(c.type.indexOf('pdf')===0){
@@ -1830,7 +1824,6 @@ var renderCerts;
         img.src=c.data;img.alt=name;img.loading='lazy';
         img.onerror=function(){thumb.innerHTML=soonBox();};
         thumb.appendChild(img);
-        /* Le spinner (load-overlay) n'est ajouté QUE sur les vignettes verrouillées */
         if(!c.revealable){
           thumb.insertAdjacentHTML('beforeend', loadOverlay());
         }
@@ -1838,7 +1831,7 @@ var renderCerts;
 
       var info=document.createElement('div');
       info.className='cert-info';
-      info.innerHTML='<div class="t">'+escapeHtml(name)+'</div><div class="d">'+fmtDate(c.year)+'</div>';
+      info.innerHTML='<div class="t">'+escapeHtml(name)+'</div>';
 
       card.appendChild(thumb);card.appendChild(info);
       grid.appendChild(card);
